@@ -1,0 +1,153 @@
+/* Cơ bản */
+html{
+  /* mặc định smooth, nhưng sẽ tắt nếu người dùng yêu cầu giảm chuyển động */
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+  background-color: #f2f2f2;
+  color: #111;
+  margin: 15px;
+  padding: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+/* Tiêu đề */
+h1 {
+  text-align: center;
+  font-size: 1.9rem;
+  margin: 0.5rem 0 1rem 0;
+}
+
+/* Lưới - mobile ưu tiên 1 cột, gap ~10px giữa hàng & cột */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile: 1 cột */
+  gap: 10px; /* 10px giữa các hàng và cột như yêu cầu */
+  align-items: start;
+  margin: 0 auto;
+  max-width: 1100px;
+}
+
+/* Figure và caption */
+figure {
+  margin: 0;
+  padding: 6px;
+  background: transparent;
+  display: block;
+}
+
+figcaption {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 0.95rem;
+}
+
+/* Hình ảnh: border, bo góc (mặc định bo tròn nhẹ) và responsive.
+   Sử dụng aspect-ratio để giữ hình vuông cho vòng tròn trên tablet */
+.grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 5px solid #0b63c6; /* xanh dương */
+  border-radius: 35px; /* mặc định góc bo */
+  background: #fff;
+  object-fit: cover;
+  aspect-ratio: 1 / 1; /* giúp giữ kích thước vuông để dễ làm circle */
+}
+
+/* Tablet: kích hoạt ở 772px -> 2 cột, ảnh thành hình tròn (border-radius:50%).
+   Đồng thời, hình cuối (last-child) chiếm cả hai cột như đề bài (5.c). */
+@media (min-width: 772px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr); /* hai cột */
+  }
+
+  .grid img {
+    border-radius: 50%; /* tạo hình tròn */
+  }
+
+  /* Hình cuối chiếm cả hai cột */
+  .grid figure:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Màn hình lớn: 992px - không lặp lại các quy tắc không cần thiết.
+   6.a: đặt mỗi thứ 3 chiếm cả hai cột -> nth-child(3n)
+   6.b: xóa border-radius khỏi tất cả các hình (về vuông). */
+@media (min-width: 992px) {
+  .grid {
+    /* giữ 2 cột nhưng cho layout rộng hơn */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* mỗi phần tử thứ 3 chiếm cả hai cột */
+  .grid figure:nth-child(3n) {
+    grid-column: 1 / -1;
+  }
+
+  /* xóa border-radius khỏi ảnh */
+  .grid img {
+    border-radius: 0;
+  }
+}
+
+/* Chế độ ưu tiên giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Chế độ tối / độ tương phản cao (giả sử mặc định sáng, tạo quy tắc cho tối) */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #0b0b0b;
+    color: #f5f5f5;
+  }
+
+  /* đổi nền ảnh để đảm bảo tương phản, đổi màu chữ chú thích */
+  .grid figure {
+    background: #0b0b0b;
+  }
+
+  .grid img {
+    background: #000;           /* a) màu nền của hình thành tối */
+    border-color: #000;         /* c) viền thành đen */
+  }
+
+  figcaption {
+    color: #ffd54f; /* b) chữ sáng/đậm (vàng) để tương phản */
+  }
+
+  footer a {
+    color: #fff;
+  }
+}
+
+/* Một vài quy tắc nhỏ cho footer / link */
+footer {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+footer a {
+  color: #0b63c6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Tăng độ dễ đọc trên màn hình nhỏ */
+@media (max-width: 420px) {
+  body { font-size: 16px; }
+}
